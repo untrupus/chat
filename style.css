@@ -81,3 +81,29 @@ main {
 .hide {
     display: none;
 }
+
+.name {
+    background: #d5d5d5;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.singleMessage {
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+.singleMessage p {
+    margin: 0;
+}
+
+.date {
+    color: gray;
+    font-size: 12px;
+    font-style: italic;
+}
