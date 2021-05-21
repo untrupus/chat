@@ -3,37 +3,54 @@ export default class Controller {
         this.model = model
         this.view = view
 
-        view.login(this.login.bind(this));
-        view.logout(this.logout.bind(this));
-        view.setUserList(this.getUsersList(), this.model.user, this.addUser.bind(this));
-        view.showChatWindow(this.getLogin());
+        this.view.loginView(this.loginController.bind(this));
+        this.view.logoutView(this.logoutController.bind(this));
+        this.view.sendMessageView(this.sendMessageController.bind(this));
+        this.getMessagesController();
     }
 
     /** Login */
-    login(name) {
-        this.model.login(name);
-        this.view.clearUserList();
-        this.view.setUserList(this.getUsersList(), this.model.user);
+    loginController(name) {
+        this.model.loginModel(name);
+        this.view.clearHandlerView(this.view.userList);
+        this.view.setUserListView(
+            this.getUsersListController(),
+            this.model.user,
+            this.setInterlocutorController.bind(this));
     }
 
     /** Logout */
-    logout() {
-        this.model.logout();
+    logoutController() {
+        this.model.logoutModel();
+        this.model.removeInterlocutorModel();
+        this.view.clearHandlerView(this.view.interlocutorName);
     }
 
     /** Get users list from local storage */
-    getUsersList() {
-        this.model.getUsers();
+    getUsersListController() {
+        this.model.getUsersModel();
         return this.model.users;
     }
 
-    /** Get your name */
-    getLogin() {
-       return this.model.getLogin();
+    /** Set interlocutor name in chat window header*/
+    setInterlocutorController(name) {
+        this.model.setInterlocutorModel(name);
+        this.view.clearHandlerView(this.view.interlocutorName);
+        this.view.setInterlocutorNameView(name);
+        this.view.clearHandlerView(this.view.window);
+        this.view.renderMessagesView(this.model.messages, this.model.getUserModel(),this.model.interlocutor);
     }
 
-    /** Add username to list */
-    addUser(name) {
-        this.model.addUser(name);
+    /** Send message to interlocutor */
+    sendMessageController(text) {
+        this.model.sendMessageModel(text, this.model.getUserModel(), this.model.interlocutor);
+        this.model.getMessageModel();
+        this.view.clearHandlerView(this.view.window);
+        this.view.renderMessagesView(this.model.messages, this.model.getUserModel(),this.model.interlocutor);
+    }
+
+    /** Get messages */
+    getMessagesController() {
+        this.model.getMessageModel();
     }
 }
